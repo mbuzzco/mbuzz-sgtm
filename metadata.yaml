@@ -1,0 +1,5 @@
+homepage: "https://mbuzz.co"
+documentation: "https://mbuzz.co/docs/integrations-sgtm"
+versions:
+  - sha: HEAD
+    changeNotes: "Initial release. Session, Event, Conversion, and Identify call types. First-party cookie management. Device fingerprint computation. Debug logging."
