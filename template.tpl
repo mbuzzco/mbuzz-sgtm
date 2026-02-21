@@ -314,6 +314,8 @@ function send(path, body) {
 // ---------------------------------------------------------------------------
 
 function handleSession(visitorId) {
+  var ua = getRequestHeader('user-agent');
+
   computeFingerprint(function(fingerprint) {
     var body = {
       session: {
@@ -325,6 +327,9 @@ function handleSession(visitorId) {
 
     if (fingerprint) {
       body.session.device_fingerprint = fingerprint;
+    }
+    if (ua) {
+      body.session.user_agent = ua;
     }
 
     send('/sessions', body);
