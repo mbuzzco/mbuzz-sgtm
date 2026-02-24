@@ -488,22 +488,5 @@ ___SERVER_PERMISSIONS___
       "isEditedByUser": true
     },
     "isRequired": true
-  },
-  {
-    "instance": {
-      "key": "use_custom_sub_domain_cookie",
-      "value": {}
-    },
-    "clientAnnotations": {
-      "isEditedByUser": true
-    },
-    "isRequired": true
-  },
-  {
-    "instance": {
-      "key": "access_template_storage",
-      "value": {}
-    },
-    "isRequired": true
   }
 ]
