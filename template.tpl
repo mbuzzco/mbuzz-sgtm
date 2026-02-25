@@ -417,10 +417,19 @@ ___SERVER_PERMISSIONS___
 [
   {
     "instance": {
-      "key": "read_event_data",
-      "value": {
-        "eventDataAccess": "any"
-      }
+      "key": {
+        "publicId": "read_event_data",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "eventDataAccess",
+          "value": {
+            "type": 1,
+            "string": "any"
+          }
+        }
+      ]
     },
     "clientAnnotations": {
       "isEditedByUser": true
@@ -429,11 +438,31 @@ ___SERVER_PERMISSIONS___
   },
   {
     "instance": {
-      "key": "get_cookies",
-      "value": {
-        "cookieAccess": "specific",
-        "cookieNames": "_mbuzz_vid"
-      }
+      "key": {
+        "publicId": "get_cookies",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "cookieAccess",
+          "value": {
+            "type": 1,
+            "string": "specific"
+          }
+        },
+        {
+          "key": "cookieNames",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "_mbuzz_vid"
+              }
+            ]
+          }
+        }
+      ]
     },
     "clientAnnotations": {
       "isEditedByUser": true
@@ -442,10 +471,67 @@ ___SERVER_PERMISSIONS___
   },
   {
     "instance": {
-      "key": "set_cookies",
-      "value": {
-        "allowedCookies": "_mbuzz_vid"
-      }
+      "key": {
+        "publicId": "set_cookies",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "allowedCookies",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "name"
+                  },
+                  {
+                    "type": 1,
+                    "string": "domain"
+                  },
+                  {
+                    "type": 1,
+                    "string": "path"
+                  },
+                  {
+                    "type": 1,
+                    "string": "secure"
+                  },
+                  {
+                    "type": 1,
+                    "string": "session"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "_mbuzz_vid"
+                  },
+                  {
+                    "type": 1,
+                    "string": "*"
+                  },
+                  {
+                    "type": 1,
+                    "string": "*"
+                  },
+                  {
+                    "type": 1,
+                    "string": "any"
+                  },
+                  {
+                    "type": 1,
+                    "string": "any"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     "clientAnnotations": {
       "isEditedByUser": true
@@ -454,10 +540,19 @@ ___SERVER_PERMISSIONS___
   },
   {
     "instance": {
-      "key": "send_http",
-      "value": {
-        "allowedUrls": "any"
-      }
+      "key": {
+        "publicId": "send_http",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "allowedUrls",
+          "value": {
+            "type": 1,
+            "string": "any"
+          }
+        }
+      ]
     },
     "clientAnnotations": {
       "isEditedByUser": true
@@ -466,11 +561,26 @@ ___SERVER_PERMISSIONS___
   },
   {
     "instance": {
-      "key": "read_request",
-      "value": {
-        "requestAccess": "any",
-        "headerAccess": "any"
-      }
+      "key": {
+        "publicId": "read_request",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "requestAccess",
+          "value": {
+            "type": 1,
+            "string": "any"
+          }
+        },
+        {
+          "key": "headerAccess",
+          "value": {
+            "type": 1,
+            "string": "any"
+          }
+        }
+      ]
     },
     "clientAnnotations": {
       "isEditedByUser": true
@@ -479,10 +589,19 @@ ___SERVER_PERMISSIONS___
   },
   {
     "instance": {
-      "key": "logging",
-      "value": {
-        "environments": "debug"
-      }
+      "key": {
+        "publicId": "logging",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "environments",
+          "value": {
+            "type": 1,
+            "string": "debug"
+          }
+        }
+      ]
     },
     "clientAnnotations": {
       "isEditedByUser": true

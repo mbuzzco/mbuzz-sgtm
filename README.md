@@ -1,18 +1,30 @@
 # mbuzz — Server-Side GTM Tag Template
 
-Multi-touch marketing attribution for any website using server-side Google Tag Manager.
+Multi-touch marketing attribution for any website using server-side Google Tag Manager. No backend code needed.
 
-## What this does
+Client-side tracking loses 30–40% of marketing data to ad blockers and 7-day cookie caps. This tag template runs inside your sGTM container, where requests flow through your own domain as first-party cookies with a 2-year expiry — so you see the full customer journey.
 
-This tag template runs inside your sGTM container and sends visitor, session, event, conversion, and identity data to [mbuzz](https://mbuzz.co) for multi-touch attribution. It's the sGTM equivalent of our server-side SDKs (Ruby, Node, Python, PHP).
+> **[Full setup guide with screenshots →](https://mbuzz.co/docs/integrations-sgtm)**
+>
+> Covers sGTM infrastructure, client-side GTM installation, CMS-specific instructions (Webflow, WordPress, Squarespace), and end-to-end testing.
 
-**No backend code needed.** Works with Webflow, WordPress, Squarespace, and any site with GTM.
+## Prerequisites
+
+This template is one piece of a 3-part setup. You need:
+
+1. **Client-side GTM** — the standard JS snippet on your site, configured to send data to your sGTM server
+2. **An sGTM server** — [Stape.io](https://stape.io) (~$10/mo), Addingwell, or Google Cloud
+3. **This tag template** — installed in your sGTM container (instructions below)
+
+If you don't have parts 1 and 2 yet, start with the **[full integration guide](https://mbuzz.co/docs/integrations-sgtm)**.
 
 ## How it works
 
 1. **Visitor ID** — Reads or creates a `_mbuzz_vid` cookie (first-party, 2-year expiry, HttpOnly)
-2. **Device fingerprint** — Computes `SHA256(ip|user_agent)` for session resolution
-3. **API calls** — Sends data to mbuzz's REST API (same endpoints the server-side SDKs use)
+2. **Device fingerprint** — Computes `SHA256(ip|user_agent)` for cross-session resolution
+3. **Channel classification** — Automatically categorizes traffic (organic search, paid social, email, direct, etc.)
+4. **API calls** — Sends data to mbuzz's REST API (same endpoints the server-side SDKs use)
+5. **Consent** — Respects CMP consent settings automatically
 
 ## Installation
 
@@ -29,9 +41,9 @@ This tag template runs inside your sGTM container and sends visitor, session, ev
 2. In your sGTM container: **Templates** → **New** → **Import**
 3. Select the `template.tpl` file
 
-## Setup
+## Tag configuration
 
-You need to create **one tag per call type**. mbuzz uses a 4-call model:
+Create **one tag per call type**. mbuzz uses a 4-call model:
 
 ### 1. Session tag (required)
 
@@ -119,9 +131,16 @@ The tag calls these mbuzz API endpoints (same as the server-side SDKs):
 | Conversion | `POST /api/v1/conversions` | `{conversion: {visitor_id, conversion_type, revenue, currency, ip, user_agent, properties}}` |
 | Identify | `POST /api/v1/identify` | `{user_id, visitor_id, traits}` |
 
-## Documentation
+## Troubleshooting
 
-Full setup guide with diagrams: [mbuzz.co/docs/integrations-sgtm](https://mbuzz.co/docs/integrations-sgtm)
+| Symptom | Fix |
+|---------|-----|
+| Tags fire but no data in dashboard | Verify you're using the **sGTM** container, not client-side GTM |
+| Events/conversions rejected | Ensure the Session tag fires first via [tag sequencing](#tag-sequencing) |
+| Cookie not being set | Confirm your sGTM domain matches your website's root domain over HTTPS |
+| Unsure about response codes | Enable **Debug** mode in Advanced Settings to log requests to the sGTM console |
+
+See the **[full guide](https://mbuzz.co/docs/integrations-sgtm)** for more details.
 
 ## License
 
