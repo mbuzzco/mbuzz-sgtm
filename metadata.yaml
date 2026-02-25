@@ -1,7 +1,7 @@
 homepage: "https://mbuzz.co"
 documentation: "https://mbuzz.co/docs/integrations-sgtm"
 versions:
-  - sha: d2f72b2
+  - sha: 3d65106
     changeNotes: "Fix server permissions format for GTM Template Editor compatibility. Add brand thumbnail and gallery categories."
   - sha: 1099ead
     changeNotes: "Initial release. Session, Event, Conversion, and Identify call types. First-party cookie management. Device fingerprint computation. Debug logging."
