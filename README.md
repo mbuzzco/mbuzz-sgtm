@@ -18,6 +18,17 @@ This template is one piece of a 3-part setup. You need:
 
 If you don't have parts 1 and 2 yet, start with the **[full integration guide](https://mbuzz.co/docs/integrations-sgtm)**.
 
+## Link your web container to the server container
+
+Before installing tags, you need to route your web container's GA4 data stream through your sGTM server. Without this step, no data reaches server-side GTM.
+
+1. Open your **web** GTM container (not the server container)
+2. Find the **Google Tag** (GA4 Configuration tag)
+3. Under **Configuration settings**, click **Add Row**
+4. Set the parameter name to `server_container_url`
+5. Set the value to your sGTM URL (e.g. `https://sgtm.yourdomain.com`)
+6. **Save** the tag and **publish** the web container
+
 ## How it works
 
 1. **Visitor ID** — Reads or creates a `_mbuzz_vid` cookie (first-party, 2-year expiry, HttpOnly)
@@ -65,7 +76,6 @@ Tracks mid-funnel actions like form submissions, button clicks, video plays.
 | Call Type | Event |
 | Event Type | `form_submit` (your event name) |
 | Trigger | Your custom event trigger |
-| Tag Sequencing | Fire `mbuzz - Session` before this tag |
 
 ### 3. Conversion tag (required for attribution)
 
@@ -79,7 +89,6 @@ Tracks conversions and triggers multi-touch attribution calculation.
 | Revenue | `{{Revenue}}` (optional, use GTM variable) |
 | Currency | `USD` (default) |
 | Trigger | Your conversion event trigger |
-| Tag Sequencing | Fire `mbuzz - Session` before this tag |
 
 ### 4. Identify tag (optional)
 
@@ -91,16 +100,12 @@ Links an anonymous visitor to a known user from your CRM or auth system.
 | Call Type | Identify |
 | User ID | `{{User ID}}` (GTM variable) |
 | Trigger | Login or signup event |
-| Tag Sequencing | Fire `mbuzz - Session` before this tag |
 
-## Tag sequencing
+## How the Session tag and visitor ID work
 
-**The Session tag must fire before any other mbuzz tag.** Without it, mbuzz doesn't know who the visitor is, and events/conversions will be rejected.
+**The Session tag must fire on every page view** using an **All Pages** trigger. It creates the `_mbuzz_vid` cookie that identifies the visitor.
 
-For each Event, Conversion, and Identify tag:
-1. Edit the tag → **Advanced Settings** → **Tag Sequencing**
-2. Check **"Fire a tag before this tag fires"**
-3. Select `mbuzz - Session`
+Event, Conversion, and Identify tags read the same `_mbuzz_vid` cookie automatically. As long as the visitor has loaded at least one page (which sets the cookie), subsequent tags will have the visitor ID they need. For events that fire on the same page as the initial page view (e.g. form submissions), the cookie is already set from the page view, so no special ordering is required.
 
 ## Advanced settings
 
@@ -136,7 +141,7 @@ The tag calls these mbuzz API endpoints (same as the server-side SDKs):
 | Symptom | Fix |
 |---------|-----|
 | Tags fire but no data in dashboard | Verify you're using the **sGTM** container, not client-side GTM |
-| Events/conversions rejected | Ensure the Session tag fires first via [tag sequencing](#tag-sequencing) |
+| Events/conversions rejected | Ensure the Session tag has an **All Pages** trigger so it fires on every page view and sets the `_mbuzz_vid` cookie |
 | Cookie not being set | Confirm your sGTM domain matches your website's root domain over HTTPS |
 | Unsure about response codes | Enable **Debug** mode in Advanced Settings to log requests to the sGTM console |
 
