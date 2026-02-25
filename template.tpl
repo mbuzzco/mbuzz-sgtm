@@ -187,6 +187,7 @@ var generateRandom = require('generateRandom');
 var makeString = require('makeString');
 var makeNumber = require('makeNumber');
 var computeEffectiveTldPlusOne = require('computeEffectiveTldPlusOne');
+var Math = require('Math');
 
 var COOKIE_NAME = '_mbuzz_vid';
 var COOKIE_MAX_AGE = 63072000; // 2 years in seconds
@@ -326,22 +327,29 @@ function handleSession(visitorId) {
   var ua = getRequestHeader('user-agent');
 
   computeFingerprint(function(fingerprint) {
-    var body = {
-      session: {
-        visitor_id: visitorId,
-        url: getEventData('page_location') || '',
-        referrer: getEventData('page_referrer') || ''
+    // Deterministic session_id: SHA256(visitor_id + fingerprint + 30-min bucket)
+    var timeBucket = makeString(Math.floor(getTimestampMillis() / 1800000));
+    var sessionSeed = visitorId + (fingerprint || '') + timeBucket;
+
+    sha256(sessionSeed, function(sessionId) {
+      var body = {
+        session: {
+          visitor_id: visitorId,
+          session_id: sessionId,
+          url: getEventData('page_location') || '',
+          referrer: getEventData('page_referrer') || ''
+        }
+      };
+
+      if (fingerprint) {
+        body.session.device_fingerprint = fingerprint;
       }
-    };
+      if (ua) {
+        body.session.user_agent = ua;
+      }
 
-    if (fingerprint) {
-      body.session.device_fingerprint = fingerprint;
-    }
-    if (ua) {
-      body.session.user_agent = ua;
-    }
-
-    send('/sessions', body);
+      send('/sessions', body);
+    }, {outputEncoding: 'hex'});
   });
 }
 
