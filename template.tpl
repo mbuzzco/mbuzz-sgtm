@@ -195,6 +195,20 @@ var TAG_VERSION = '1.0.0';
 var DEFAULT_API_URL = 'https://mbuzz.co/api/v1';
 
 // ---------------------------------------------------------------------------
+// Resolve the real visitor IP and user agent from event data, falling back
+// to transport-layer values. ip_override is set by the GA4 client from the
+// original request; getRemoteAddress() may return a proxy/CDN IP instead.
+// ---------------------------------------------------------------------------
+
+function getVisitorIp() {
+  return getEventData('ip_override') || getRemoteAddress();
+}
+
+function getVisitorUa() {
+  return getEventData('user_agent') || getRequestHeader('user-agent');
+}
+
+// ---------------------------------------------------------------------------
 // Visitor ID: read from cookie or generate new
 // ---------------------------------------------------------------------------
 
@@ -246,8 +260,8 @@ function refreshCookie(visitorId) {
 // ---------------------------------------------------------------------------
 
 function computeFingerprint(callback) {
-  var ip = getRemoteAddress();
-  var ua = getRequestHeader('user-agent');
+  var ip = getVisitorIp();
+  var ua = getVisitorUa();
 
   if (!ip || !ua) {
     callback(null);
@@ -324,7 +338,7 @@ function send(path, body) {
 // ---------------------------------------------------------------------------
 
 function handleSession(visitorId) {
-  var ua = getRequestHeader('user-agent');
+  var ua = getVisitorUa();
 
   computeFingerprint(function(fingerprint) {
     // Deterministic session_id: SHA256(visitor_id + fingerprint + 30-min bucket)
@@ -354,8 +368,8 @@ function handleSession(visitorId) {
 }
 
 function handleEvent(visitorId) {
-  var ip = getRemoteAddress();
-  var ua = getRequestHeader('user-agent');
+  var ip = getVisitorIp();
+  var ua = getVisitorUa();
 
   var eventObj = {
     event_type: data.eventType || getEventData('event_name') || 'custom_event',
@@ -374,8 +388,8 @@ function handleEvent(visitorId) {
 }
 
 function handleConversion(visitorId) {
-  var ip = getRemoteAddress();
-  var ua = getRequestHeader('user-agent');
+  var ip = getVisitorIp();
+  var ua = getVisitorUa();
 
   var conversionObj = {
     visitor_id: visitorId,
