@@ -1,6 +1,8 @@
 homepage: "https://mbuzz.co"
 documentation: "https://mbuzz.co/docs/integrations-sgtm"
 versions:
+  - sha: a4764e0
+    changeNotes: "Add UTF-8 BOM for Community Template Gallery compatibility."
   - sha: 3d65106
     changeNotes: "Fix server permissions format for GTM Template Editor compatibility. Add brand thumbnail and gallery categories."
   - sha: 1099ead
