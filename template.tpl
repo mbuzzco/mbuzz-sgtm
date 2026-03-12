@@ -137,7 +137,7 @@ ___TEMPLATE_PARAMETERS___
         "name": "apiUrl",
         "displayName": "API URL",
         "simpleValueType": true,
-        "defaultValue": "https://mbuzz.co/api/v1",
+        "defaultValue": "https://api.mbuzz.co/api/v1",
         "help": "Override the API endpoint. Only change this for testing or self-hosted deployments."
       },
       {
@@ -192,7 +192,7 @@ var Math = require('Math');
 var COOKIE_NAME = '_mbuzz_vid';
 var COOKIE_MAX_AGE = 63072000; // 2 years in seconds
 var TAG_VERSION = '1.0.0';
-var DEFAULT_API_URL = 'https://mbuzz.co/api/v1';
+var DEFAULT_API_URL = 'https://api.mbuzz.co/api/v1';
 
 // ---------------------------------------------------------------------------
 // Resolve the real visitor IP and user agent from event data, falling back

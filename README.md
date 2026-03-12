@@ -111,7 +111,7 @@ Event, Conversion, and Identify tags read the same `_mbuzz_vid` cookie automatic
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| API URL | `https://mbuzz.co/api/v1` | Override for testing or self-hosted |
+| API URL | `https://api.mbuzz.co/api/v1` | Override for testing or self-hosted |
 | Cookie Domain | (auto-detect) | Override cookie domain |
 | Cookie Path | `/` | Cookie path |
 | Debug | Off | Log requests/responses to sGTM console |
