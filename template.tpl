@@ -93,12 +93,10 @@ ___TEMPLATE_PARAMETERS___
     "name": "userId",
     "displayName": "User ID",
     "simpleValueType": true,
-    "valueValidators": [
-      { "type": "NON_EMPTY" }
-    ],
-    "help": "The known user ID from your CRM, auth system, or database. Use a GTM variable.",
+    "help": "The known user ID from your CRM, auth system, or database. Use a GTM variable. Required for Identify tags. Optional for Conversion tags — when provided, the backend uses it as the stable identifier (sufficient on its own for cookieless attribution).",
     "enablingConditions": [
-      { "paramName": "callType", "paramValue": "identify", "type": "EQUALS" }
+      { "paramName": "callType", "paramValue": "identify", "type": "EQUALS" },
+      { "paramName": "callType", "paramValue": "conversion", "type": "EQUALS" }
     ]
   },
   {
@@ -396,6 +394,12 @@ function handleConversion(visitorId) {
     conversion_type: data.eventType || 'conversion',
     currency: data.currency || 'USD'
   };
+
+  // Forward the User ID configured on the GTM tag (if any). The backend
+  // accepts user_id as a stable identifier — sufficient on its own for
+  // cookieless conversions, and the binding key for the Identity row
+  // when both visitor_id and user_id are present.
+  if (data.userId) conversionObj.user_id = data.userId;
 
   if (ip) conversionObj.ip = ip;
   if (ua) conversionObj.user_agent = ua;
